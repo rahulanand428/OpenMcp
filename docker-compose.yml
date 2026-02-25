@@ -1,0 +1,67 @@
+services:
+  # ============================================================================
+  # Test Database (Self-contained for MCP development)
+  # ============================================================================
+  test-db:
+    image: postgres:16-alpine
+    container_name: mcp_test_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: dev_password
+      POSTGRES_DB: test_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ../tests/init-scripts:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ============================================================================
+  # MCP Server: PostgreSQL
+  # ============================================================================
+  mcp-postgres:
+    build:
+      context: ./src/Postgres
+      dockerfile: Dockerfile
+    container_name: mcp_postgres
+    depends_on:
+      test-db:
+        condition: service_healthy
+    environment:
+      - PORT=8080
+      # Connects to the local test-db defined above
+      - DATABASE_URL=postgres://openmcp_readonly:readonly_pass@test-db:5432/test_db
+    ports:
+      - "8081:8080" # Host port 8081 -> Container 8080
+
+  # ============================================================================
+  # MCP Server: FileSystem
+  # ============================================================================
+  mcp-filesystem:
+    build:
+      context: ./src/FileSystem
+      dockerfile: Dockerfile
+    container_name: mcp_filesystem
+    environment:
+      - PORT=8080
+    volumes:
+      # Maps a local 'sandbox' folder for safe testing
+      - ./sandbox:/data
+    ports:
+      - "8082:8080" # Host port 8082 -> Container 8080
+
+  # ============================================================================
+  # MCP Server: DuckDuckGo (Web Search)
+  # ============================================================================
+  mcp-duckduckgo:
+    build:
+      context: ./src/DuckDuckGo
+      dockerfile: Dockerfile
+    container_name: mcp_duckduckgo
+    environment:
+      - PORT=8080
+    ports:
+      - "8083:8080" # Host port 8083 -> Container 8080
