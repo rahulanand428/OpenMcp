@@ -4,9 +4,9 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.SemanticKernel;
 using Microsoft.Extensions.Logging;
-using StockBix.Mcp.Client;
+using OpenMcp.Client;
 
-namespace StockBix.Mcp.Client.Plugins
+namespace OpenMcp.Client.Plugins
 {
     /// <summary>
     /// MCP Client for the DuckDuckGo Search Server.

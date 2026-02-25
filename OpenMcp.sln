@@ -12,7 +12,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleClient", "samples\do
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dotnet", "dotnet", "{9D954F24-B3F1-FF05-00E7-71549D8DD0D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockBix.Mcp.Client", "sdk\dotnet\StockBix.Mcp.Client\StockBix.Mcp.Client.csproj", "{55E92A9C-DF82-9031-9366-62352B6DAE90}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenMcp.Client", "sdk\dotnet\OpenMcp.Client\OpenMcp.Client.csproj", "{55E92A9C-DF82-9031-9366-62352B6DAE90}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

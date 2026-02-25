@@ -7,12 +7,12 @@ services:
     container_name: mcp_test_db
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: dev_password
+      POSTGRES_PASSWORD: openmcp_readonly
       POSTGRES_DB: test_db
     ports:
       - "5432:5432"
     volumes:
-      - ../tests/init-scripts:/docker-entrypoint-initdb.d
+      - ./tests/init-scripts:/docker-entrypoint-initdb.d
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s

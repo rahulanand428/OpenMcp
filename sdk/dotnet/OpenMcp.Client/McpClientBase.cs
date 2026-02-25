@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
-namespace StockBix.Mcp.Client
+namespace OpenMcp.Client
 {
     /// <summary>
     /// Base class for interacting with MCP Servers via HTTP/SSE.
@@ -78,7 +78,7 @@ namespace StockBix.Mcp.Client
             {
                 protocolVersion = "2024-11-05",
                 capabilities = new { },
-                clientInfo = new { name = "StockBixAI", version = "1.0" }
+                clientInfo = new { name = "OpenMcpClient", version = "1.0" }
             };
 
             // We await the response to ensure the server is ready
