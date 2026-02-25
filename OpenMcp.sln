@@ -14,10 +14,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dotnet", "dotnet", "{9D954F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenMcp.Client", "sdk\dotnet\OpenMcp.Client\OpenMcp.Client.csproj", "{55E92A9C-DF82-9031-9366-62352B6DAE90}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{12345678-1234-1234-1234-1234567890AB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenMcp.Client.Tests", "tests\OpenMcp.Client.Tests\OpenMcp.Client.Tests.csproj", "{ABCDEF01-2345-6789-ABCD-EF0123456789}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
