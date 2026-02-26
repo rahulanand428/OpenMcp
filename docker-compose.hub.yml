@@ -12,7 +12,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      # Creates user & dummy table for testing, can be modified as required
+     # Creates user & dummy table for testing, can be modified as required
      - ${Postgres_Init_Script_PATH:-./tests/init-scripts}:${Init_Script:-/docker-entrypoint-initdb.d}
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
@@ -20,13 +20,10 @@ services:
       timeout: 5s
       retries: 5
 
-  # ============================================================================
   # MCP Server: PostgreSQL
   # ============================================================================
   mcp-postgres:
-    build:
-      context: ./src/Postgres
-      dockerfile: Dockerfile
+    image: ${MCP_POSTGRES_IMAGE:-openmcpserver/mcp-postgres:latest}
     container_name: mcp_postgres
     depends_on:
       test-db:
@@ -37,35 +34,30 @@ services:
       - DATABASE_URL=${DATABASE_URL:-postgres://openmcp_readonly:readonly_pass@test-db:5432/test_db}
       - POSTGRES_READ_ONLY=${POSTGRES_READ_ONLY:-true}
     ports:
-      - "8081:8080" # Host port 8081 -> Container 8080
+      - "${PORT_POSTGRES:-8081}:8080"
 
-  # ============================================================================
   # MCP Server: FileSystem
   # ============================================================================
   mcp-filesystem:
-    build:
-      context: ./src/FileSystem
-      dockerfile: Dockerfile
+    image: ${MCP_FILESYSTEM_IMAGE:-openmcpserver/mcp-filesystem:latest}
     container_name: mcp_filesystem
     environment:
       - PORT=8080
       - FILESYSTEM_ROOT=${FILESYSTEM_ROOT:-/data}
     volumes:
-      # Maps a local 'sandbox' folder for safe testing
+       # Maps a local 'sandbox' folder for safe testing
       - ${FILESYSTEM_HOST_PATH:-./sandbox}:${FILESYSTEM_ROOT:-/data}
     ports:
-      - "8082:8080" # Host port 8082 -> Container 8080
+      - "${PORT_FILESYSTEM:-8082}:8080"
 
-  # ============================================================================
   # MCP Server: DuckDuckGo (Web Search)
   # ============================================================================
   mcp-duckduckgo:
-    build:
-      context: ./src/DuckDuckGo
-      dockerfile: Dockerfile
+    image: ${MCP_DUCKDUCKGO_IMAGE:-openmcpserver/mcp-duckduckgo:latest}
     container_name: mcp_duckduckgo
     environment:
       - PORT=8080
       - DDG_DEFAULT_MAX_RESULTS=${DDG_DEFAULT_MAX_RESULTS:-10}
     ports:
-      - "8083:8080" # Host port 8083 -> Container 8080
+      - "${PORT_DUCKDUCKGO:-8083}:8080"
+      
