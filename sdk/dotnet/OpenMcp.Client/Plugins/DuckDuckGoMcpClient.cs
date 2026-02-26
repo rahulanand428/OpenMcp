@@ -21,14 +21,15 @@ namespace OpenMcp.Client.Plugins
 
         [KernelFunction, Description("Searches the web for real-time information.")]
         public async Task<string> SearchAsync(
-            [Description("The search query")] string query)
+            [Description("The search query")] string query,
+            [Description("Max results to return")] int maxResults = 10)
         {
-            _logger.LogInformation($"[DuckDuckGoMcpClient] SearchAsync called with query: {query}");
+            _logger.LogInformation($"[DuckDuckGoMcpClient] SearchAsync called with query: {query}, maxResults: {maxResults}");
             
             try
             {
                 // mcp-duckduckgo exposes 'search' tool
-                var result = await CallToolAsync("search", new { query = query });
+                var result = await CallToolAsync("search", new { query = query, max_results = maxResults });
                 
                 _logger.LogInformation($"[DuckDuckGoMcpClient] Search success. Result length: {result?.Length ?? 0}");
                 return result;

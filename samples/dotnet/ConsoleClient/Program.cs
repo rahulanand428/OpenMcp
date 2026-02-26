@@ -7,6 +7,7 @@ using OpenMcp.Client;
 using OpenMcp.Client.Plugins;
 
 // 1. Setup Configuration
+// Loads settings from appsettings.json and environment variables (useful for Docker/Cloud overrides)
 var builder = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -15,6 +16,7 @@ var builder = new ConfigurationBuilder()
 IConfiguration config = builder.Build();
 
 // 2. Setup DI and Logging
+// MCP Clients rely on HttpClient for SSE (Server-Sent Events) and HTTP POST operations.
 var serviceProvider = new ServiceCollection()
     .AddLogging(configure => configure.AddConsole())
     .AddSingleton<IConfiguration>(config)
@@ -24,16 +26,21 @@ var serviceProvider = new ServiceCollection()
 var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
 var httpClientFactory = serviceProvider.GetRequiredService<IHttpClientFactory>();
 
+// 3. Execute Tests
+// Uncomment specific tests to verify individual MCP servers manually.
 // await TestDuckDuckGoSearchAsync();
 // await TestFileSystemAsync();
 // await TestPostgresAsync();
+
+// By default, we test the Semantic Kernel integration which demonstrates the "Agentic" capability.
 await TestSemanticKernelAgentAsync();
 
 logger.LogInformation("All tests complete. Done.");
 
-
 async Task TestDuckDuckGoSearchAsync()
 {
+    // Example: Manually instantiating an MCP Client without Semantic Kernel.
+    // Useful for direct tool usage in standard .NET apps.
     string url = config["McpEndpoints:DuckDuckGo"] ?? "http://localhost:8083";
     logger.LogInformation($"\n[ConsoleClient] --- Testing DuckDuckGo ({url}) ---");
     try
@@ -92,21 +99,28 @@ async Task TestSemanticKernelAgentAsync()
     logger.LogInformation("\n[ConsoleClient] --- Testing Semantic Kernel Agent Integration ---");
     
     // 1. Create the Kernel
+    // The Kernel is the core of the AI Agent. It manages plugins and AI services.
     var kernelBuilder = Kernel.CreateBuilder();
-    // Note: In a real app, you would add .AddOpenAIChatCompletion(...) here.
-    // Since we don't have an LLM configured in this sample, we will just verify the plugin registration.
+    
+    // Note: In a real-world scenario, you would add an LLM service here:
+    // kernelBuilder.AddOpenAIChatCompletion("gpt-4", "your-api-key");
     var kernel = kernelBuilder.Build();
 
     // 2. Create the MCP Client
+    // We instantiate the MCP client which connects to the running Docker container.
     string ddgUrl = config["McpEndpoints:DuckDuckGo"] ?? "http://localhost:8083";
     using var ddgClient = new DuckDuckGoMcpClient(httpClientFactory.CreateClient(), ddgUrl, logger);
 
     // 3. Import the MCP Client as a Plugin
+    // This is the key step: The MCP Client is registered as a "Plugin" in Semantic Kernel.
+    // The Kernel scans the client for methods decorated with [KernelFunction].
     kernel.Plugins.AddFromObject(ddgClient, "DuckDuckGo");
 
     logger.LogInformation("Plugin 'DuckDuckGo' registered.");
 
-    // 4. Debug: List all functions in the plugin to verify names
+    // 4. Debug: Verify Function Registration
+    // It's good practice to list available functions to ensure naming conventions are correct.
+    // Semantic Kernel often strips "Async" suffixes from function names.
     var plugin = kernel.Plugins["DuckDuckGo"];
     foreach (var func in plugin)
     {
@@ -114,16 +128,23 @@ async Task TestSemanticKernelAgentAsync()
     }
 
     // 5. Invoke it via the Kernel (Simulating what an Agent would do)
-    // Note: We use the function name found in the plugin (usually matches method name 'SearchAsync')
+    // Instead of calling client.SearchAsync() directly, we ask the Kernel to invoke it.
+    // In a full Agent scenario, the LLM would automatically select this tool and generate the arguments.
     if (plugin.TryGetFunction("Search", out var function))
     {
-        var result = await kernel.InvokeAsync(function, new KernelArguments { ["query"] = "Semantic Kernel 1.0 release date" });
+        // We pass arguments via KernelArguments. 
+        // Note: 'maxResults' matches the parameter name in the C# method.
+        var result = await kernel.InvokeAsync(function, new KernelArguments 
+        { 
+            ["query"] = "Semantic Kernel 1.0 release date",
+            ["maxResults"] = 20 
+        });
         Console.WriteLine("\n--- Kernel Invocation Result ---");
         Console.WriteLine(result);
         Console.WriteLine("--------------------------------\n");
     }
     else
     {
-        logger.LogError("Function 'SearchAsync' not found in plugin.");
+        logger.LogError("Function 'Search' not found in plugin.");
     }
 }

@@ -1,3 +1,4 @@
+import os
 from mcp.server.fastmcp import FastMCP
 from ddgs  import DDGS
 import uvicorn
@@ -5,8 +6,11 @@ import uvicorn
 # Initialize FastMCP server
 mcp = FastMCP("duckduckgo-search")
 
+# Configuration: Allow overriding the default result count via environment variables
+DEFAULT_MAX_RESULTS = int(os.environ.get("DDG_DEFAULT_MAX_RESULTS", "10"))
+
 @mcp.tool()
-def search(query: str, max_results: int = 10) -> str:
+def search(query: str, max_results: int = DEFAULT_MAX_RESULTS) -> str:
     """
     Searches the web using DuckDuckGo.
     
@@ -29,6 +33,5 @@ def search(query: str, max_results: int = 10) -> str:
 
 if __name__ == "__main__":
     # Run the server using uvicorn
-    # FastMCP automatically exposes /sse and /message endpoints
     import uvicorn
     uvicorn.run(mcp.sse_app, host="0.0.0.0", port=8080)

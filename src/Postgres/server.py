@@ -7,7 +7,11 @@ import uvicorn
 # Initialize FastMCP server
 mcp = FastMCP("postgres-query")
 
+# Configuration
 DB_URL = os.environ.get("DATABASE_URL")
+
+# Security: Allow disabling read-only mode via env var (default is True for safety)
+READ_ONLY = os.environ.get("POSTGRES_READ_ONLY", "true").lower() == "true"
 
 def get_connection():
     return psycopg2.connect(DB_URL)
@@ -20,9 +24,11 @@ def query(sql: str) -> str:
     Args:
         sql: The SQL query to execute (SELECT only).
     """
-    # Basic safety check (The DB user should also be read-only)
-    if "drop " in sql.lower() or "delete " in sql.lower() or "update " in sql.lower() or "insert " in sql.lower():
-        return "Error: Only SELECT queries are allowed."
+    # Security: Basic SQL keyword check. 
+    # Note: The database user itself should also have restricted permissions (GRANT SELECT only).
+    if READ_ONLY:
+        if "drop " in sql.lower() or "delete " in sql.lower() or "update " in sql.lower() or "insert " in sql.lower():
+            return "Error: Only SELECT queries are allowed in Read-Only mode."
 
     conn = None
     try:

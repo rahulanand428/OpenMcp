@@ -11,6 +11,14 @@ using Microsoft.Extensions.Logging;
 namespace OpenMcp.Client
 {
     /// <summary>
+    /// Represents errors that occur during MCP protocol interactions.
+    /// </summary>
+    public class McpClientException : Exception
+    {
+        public McpClientException(string message) : base(message) { }
+    }
+
+    /// <summary>
     /// Base class for interacting with MCP Servers via HTTP/SSE.
     /// </summary>
     public abstract class McpClientBase : IDisposable
@@ -29,7 +37,7 @@ namespace OpenMcp.Client
         protected McpClientBase(HttpClient httpClient, string baseUrl, ILogger logger)
         {
             HttpClient = httpClient;
-            // FIX: Increase timeout for AI workloads (default is 100s)
+            // Increase timeout for AI workloads (default is 100s) as some tools might take time
             HttpClient.Timeout = TimeSpan.FromMinutes(5);
             BaseUrl = baseUrl.TrimEnd('/');
             _logger = logger;
@@ -59,7 +67,7 @@ namespace OpenMcp.Client
 
             if (string.IsNullOrEmpty(_sessionId))
             {
-                throw new Exception($"Failed to obtain session ID from MCP server at {BaseUrl}");
+                throw new McpClientException($"Failed to obtain session ID from MCP server at {BaseUrl}");
             }
 
             if (!_isInitialized)
@@ -100,7 +108,6 @@ namespace OpenMcp.Client
                     
                     var request = new HttpRequestMessage(HttpMethod.Get, $"{BaseUrl}/sse");
                     request.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("text/event-stream"));
-                    // request.Headers.Host = "localhost:8080"; // Removed hardcoded host for generic usage
 
                     // Use HttpCompletionOption.ResponseHeadersRead to get the stream immediately
                     using var response = await HttpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
@@ -196,7 +203,7 @@ namespace OpenMcp.Client
             {
                  var errorMsg = error.ToString();
                  _logger.LogError($"[MCP] Tool {toolName} Error: {errorMsg}");
-                 throw new Exception($"MCP Tool Error: {errorMsg}");
+                 throw new McpClientException($"MCP Tool Error: {errorMsg}");
             }
             
             return responseJson.ToString();
@@ -250,7 +257,6 @@ namespace OpenMcp.Client
             uriBuilder.Query = $"session_id={_sessionId}";
             
             var requestMessage = new HttpRequestMessage(HttpMethod.Post, uriBuilder.Uri);
-            // requestMessage.Headers.Host = "localhost:8080"; // Removed hardcoded host
             requestMessage.Content = new StringContent(json, Encoding.UTF8, "application/json"); 
 
             var response = await HttpClient.SendAsync(requestMessage);

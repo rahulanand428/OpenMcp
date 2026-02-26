@@ -5,11 +5,12 @@ import uvicorn
 # Initialize FastMCP server
 mcp = FastMCP("filesystem")
 
-# Security: Only allow access within this directory
-DATA_DIR = "/data"
+# Security: Only allow access within this directory.
+# This acts as a "jail" to prevent the LLM from accessing system files.
+DATA_DIR = os.environ.get("FILESYSTEM_ROOT", "/data")
 
 def validate_path(path: str) -> str:
-    """Ensures the path is within the allowed DATA_DIR."""
+    """Ensures the path is within the allowed DATA_DIR to prevent directory traversal attacks."""
     # Normalize path to remove .. components
     full_path = os.path.abspath(os.path.join(DATA_DIR, path.lstrip("/")))
     if not full_path.startswith(os.path.abspath(DATA_DIR)):
