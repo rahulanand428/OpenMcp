@@ -14,13 +14,9 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Prepare Wiki Content
-        run: |
-          mkdir wiki_content
-          cp WHY_OPENMCP.md wiki_content/Home.md
-
       - name: Publish to Wiki
         uses: spenserblack/actions-wiki@v0.1.0
         with:
-          wiki-directory: wiki_content
+          path: WHY_OPENMCP.md
+          custom_filename: Home.md
           token: ${{ secrets.GITHUB_TOKEN }}
