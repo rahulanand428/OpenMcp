@@ -1,6 +1,6 @@
 # OpenMcp
 
-[![CI](https://github.com/rahulanand428/OpenMcp/actions/workflows/ci.yml/badge.svg)](https://github.com/rahulanand428 /OpenMcp/actions/workflows/ci.yml)
+[![CI](https://github.com/rahulanand428/OpenMcp/actions/workflows/ci.yml/badge.svg)](https://github.com/rahulanand428/OpenMcp/actions/workflows/ci.yml)
 [![NuGet](https://img.shields.io/nuget/v/OpenMcp.Client.svg)](https://www.nuget.org/packages/OpenMcp.Client)
 [![Docker Pulls](https://img.shields.io/docker/pulls/openmcp/mcp-postgres)](https://hub.docker.com/u/openmcp)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
