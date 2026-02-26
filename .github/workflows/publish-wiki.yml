@@ -1,0 +1,25 @@
+name: Publish Wiki
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'WHY_OPENMCP.md'
+
+jobs:
+  publish-wiki:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Publish to Wiki
+        uses: spenserblack/actions-wiki@v0.1.0
+        with:
+          # The folder or file to publish
+          path: WHY_OPENMCP.md
+          # The name of the page in the Wiki (e.g., "Why-OpenMcp.md")
+          custom_filename: Home.md 
+          # Uses the GITHUB_TOKEN automatically
+          token: ${{ secrets.GITHUB_TOKEN }}
