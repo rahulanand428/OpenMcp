@@ -19,8 +19,12 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
+      - name: Get Version
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
       - name: Pack NuGet
-        run: dotnet pack sdk/dotnet/OpenMcp.Client/OpenMcp.Client.csproj --configuration Release --output ./nupkg
+        run: dotnet pack sdk/dotnet/OpenMcp.Client/OpenMcp.Client.csproj --configuration Release --output ./nupkg /p:Version=${{ steps.get_version.outputs.VERSION }}
 
       - name: Push to NuGet
         run: dotnet nuget push ./nupkg/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json

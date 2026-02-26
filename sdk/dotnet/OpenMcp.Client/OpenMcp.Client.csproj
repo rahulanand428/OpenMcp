@@ -30,5 +30,11 @@
   <ItemGroup>
     <None Include="Readme.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
+  <PropertyGroup>
+    <PackageIcon>icon.png</PackageIcon>
+  </PropertyGroup>
+  <ItemGroup>
+      <None Include="icon.png" Pack="true" PackagePath="\"/>
+  </ItemGroup>
 
 </Project>

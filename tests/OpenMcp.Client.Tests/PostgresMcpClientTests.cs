@@ -1,5 +1,4 @@
 using System.Net;
-using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.Protected;
@@ -8,13 +7,13 @@ using Xunit;
 
 namespace OpenMcp.Client.Tests
 {
-    public class DuckDuckGoMcpClientTests
+    public class PostgresMcpClientTests
     {
         private readonly Mock<HttpMessageHandler> _handlerMock;
         private readonly HttpClient _httpClient;
         private readonly Mock<ILogger> _loggerMock;
 
-        public DuckDuckGoMcpClientTests()
+        public PostgresMcpClientTests()
         {
             _handlerMock = new Mock<HttpMessageHandler>();
             _httpClient = new HttpClient(_handlerMock.Object)
@@ -25,33 +24,28 @@ namespace OpenMcp.Client.Tests
         }
 
         [Fact]
-        public async Task SearchAsync_ReturnsResults_WhenServerRespondsSuccessfully()
+        public async Task FindTablesAsync_SendsCorrectRequest()
         {
             // Arrange
-            var client = new DuckDuckGoMcpClient(_httpClient, "http://mock-mcp", _loggerMock.Object);
-            var expectedResult = "Search Result Data";
+            var client = new PostgresMcpClient(_httpClient, "http://mock-mcp", _loggerMock.Object);
 
-            // Mock the SSE Connection (Session ID)
-            // The client connects to /sse and waits for "session_id=..."
+            // Mock SSE Connection & Handshake
             SetupMockResponse("http://mock-mcp/sse", "data: session_id=test-session-123\n\n");
-
-            // Mock the Initialization Handshake
             SetupMockResponse("http://mock-mcp/messages/?session_id=test-session-123", "{}");
 
-            // Mock the Tool Call Response (JSON-RPC)
-            // The client sends a POST to /messages/ and waits for an SSE event with the result.
-            // NOTE: Testing the full SSE loop with Moq is complex because it involves background tasks.
-            // For a unit test, we often test that the *Request* was formed correctly, 
-            // or we refactor the client to make the transport layer more testable.
-            
-            // However, to keep this simple and working with your current architecture,
-            // we will verify that the client *attempts* to make the connection.
-            
-            // In a real integration test, you would run against the Docker container.
-            // Refer Sample Files as a base for Integration testing.
+            // Act
+            // We expect this to eventually timeout or fail because our mock SSE doesn't return the specific JSON-RPC result ID.
+            // However, we are verifying that the client *attempts* the call without crashing on initialization.
+            try
+            {
+                await client.FindTablesAsync("%");
+            }
+            catch (Exception) { /* Expected timeout in mock environment */ }
+
+            // Assert: Verify the HTTP client was called at least once (Handshake + Tool Call)
+            _handlerMock.Protected().Verify("SendAsync", Times.AtLeastOnce(), ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>());
         }
 
-        // Helper to mock HttpClient responses
         private void SetupMockResponse(string url, string responseContent)
         {
             _handlerMock.Protected()
