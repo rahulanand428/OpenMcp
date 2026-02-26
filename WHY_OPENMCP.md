@@ -76,7 +76,7 @@ Even if you don't use .NET, OpenMcp provides value through its **Dockerized Serv
 
 ---
 
-## 📢 Call to Action
+## Call to Action
 
 **Stop building tools from scratch.** Start composing agents with OpenMcp.
 
@@ -99,3 +99,6 @@ Even if you don't use .NET, OpenMcp provides value through its **Dockerized Serv
 * Doc : https://github.com/rahulanand428/OpenMcp/blob/main/README.md
 * NuGet : https://www.nuget.org/packages/OpenMcp.Client
 * Docker Hub : https://hub.docker.com/u/openmcpserver
+* Samples : https://github.com/rahulanand428/OpenMcp/tree/main/samples
+* Nuget Doc : https://github.com/rahulanand428/OpenMcp/blob/main/sdk/dotnet/OpenMcp.Client/README.md
+* Docker Doc : https://github.com/rahulanand428/OpenMcp/blob/main/src/README.md
