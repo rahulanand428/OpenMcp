@@ -21,6 +21,19 @@ bld/
 [Bb]in/
 [Oo]bj/
 
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+*.egg-info/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+Thumbs.db
+
 # Docker
 .env
 sandbox/
