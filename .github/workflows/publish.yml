@@ -37,13 +37,13 @@ jobs:
         include:
           - service: postgres
             context: ./src/Postgres
-            image: openmcp/mcp-postgres
+            image: openmcpserver/mcp-postgres
           - service: filesystem
             context: ./src/FileSystem
-            image: openmcp/mcp-filesystem
+            image: openmcpserver/mcp-filesystem
           - service: duckduckgo
             context: ./src/DuckDuckGo
-            image: openmcp/mcp-duckduckgo
+            image: openmcpserver/mcp-duckduckgo
 
     steps:
       - name: Checkout repository

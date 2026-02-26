@@ -71,3 +71,16 @@ The clients require a `BaseUrl` pointing to the running MCP Server (usually a Do
 *   **Postgres:** `http://localhost:8081`
 *   **FileSystem:** `http://localhost:8082`
 *   **DuckDuckGo:** `http://localhost:8083`
+
+
+## MCP server docker images
+To pull and start MCP servers from docker refer to doc -   https://github.com/rahulanand428/OpenMcp/blob/9b322daea2c92a7c18b28c8736405a9a9babb07b/src/README.md
+
+*   **GitHub Repository:** [https://github.com/rahulanand428/OpenMcp](https://github.com/rahulanand428/OpenMcp)
+*   **NuGet Package:** [OpenMcp.Client](https://www.nuget.org/packages/OpenMcp.Client)
+*   **Docker Hub:** [openmcpserver](https://hub.docker.com/u/openmcpserver)
+*   **Documentation:**
+    *   [Client SDK Guide](https://github.com/rahulanand428/OpenMcp/blob/main/sdk/dotnet/OpenMcp.Client/Readme.md)
+    *   [MCP Servers Guide](https://github.com/rahulanand428/OpenMcp/blob/main/src/README.md)
+*   **Samples:**
+    *   [.NET Console Client](https://github.com/rahulanand428/OpenMcp/tree/main/samples/dotnet/ConsoleClient)
