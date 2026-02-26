@@ -49,6 +49,16 @@ namespace OpenMcp.Client.Tests
             
             // In a real integration test, you would run against the Docker container.
             // Refer Sample Files as a base for Integration testing.
+
+            // Act
+            try
+            {
+                await client.SearchAsync("test query");
+            }
+            catch (Exception) { /* Expected timeout in mock environment */ }
+
+            // Assert: Verify the HTTP client was called for the handshake.
+            _handlerMock.Protected().Verify("SendAsync", Times.AtLeastOnce(), ItExpr.Is<HttpRequestMessage>(req => req.RequestUri.ToString().StartsWith("http://mock-mcp/")), ItExpr.IsAny<CancellationToken>());
         }
 
         // Helper to mock HttpClient responses

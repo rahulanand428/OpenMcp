@@ -42,8 +42,10 @@ namespace OpenMcp.Client.Plugins
         [KernelFunction, Description("Gets the column schema for a specific table.")]
         public async Task<string> GetTableSchemaAsync(
             [Description("The table name")] string tableName)
-        {
-            string sql = $"SELECT column_name, data_type FROM information_schema.columns WHERE table_name = '{tableName}';";
+        {   
+            // Sanitize to prevent basic SQL injection in the table name.
+            var safeTableName = tableName.Replace("'", "").Replace(";", "").Trim();
+            string sql = $"SELECT column_name, data_type FROM information_schema.columns WHERE table_name = '{safeTableName}';";
             var result = await CallToolAsync("query", new { sql = sql });
             _logger.LogInformation("[PostgresMcpClient] Schema result for {TableName}: {Result}", tableName, result);
             return result;

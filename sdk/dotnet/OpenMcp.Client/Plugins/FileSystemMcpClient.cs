@@ -52,7 +52,7 @@ namespace OpenMcp.Client.Plugins
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[FileSystemMcpClient] Error: {ex.Message}");
+                _logger.LogError(ex, "[FileSystemMcpClient] Error writing file at path {Path}", path);
                 throw;
             }
         }
