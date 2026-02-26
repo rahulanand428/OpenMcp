@@ -29,23 +29,30 @@ Follow this path if you are building a .NET application or an AI agent with Sema
 
 #### Step 1: Run the MCP Servers
 
-The servers run in Docker. First, clone the repository and start the services using Docker Compose.
-* note : If you already have mcp server running , just point the urls in respective config files.
-
+The easiest way to run the pre-built MCP servers is with Docker Compose. You only need one file to get started.
 
 ```bash
-# Clone the repository
-git clone https://github.com/rahulanand428/OpenMcp.git
-cd OpenMcp
+# 1. Download the Docker Compose file for consumers.
+# You can save the raw content from this URL:
+ https://raw.githubusercontent.com/rahulanand428/OpenMcp/main/docker-compose.hub.yml
 
-# (Optional) Copy .env.example to .env and customize ports or other settings
-# cp .env.example .env
+# 2. (Optional) Create a .env file in the same directory to customize ports or other settings.
+# You can use the .env.example file in this repository as a template.
 
-# Start all servers in the background
-docker compose up --build -d
+# 3. Start all servers.
+# This command pulls the latest images from Docker Hub and runs them.
+docker compose -f docker-compose.hub.yml up -d
 ```
 
-This command will start the PostgreSQL, FileSystem, and DuckDuckGo MCP servers on your machine.
+This will start the PostgreSQL, FileSystem, and DuckDuckGo MCP servers on your machine.
+
+> **Note for Contributors:** If you plan to modify the Python server code, you should clone the full repository and use the development `docker-compose.yml` file instead. This file builds images from your local source code, allowing you to test your changes.
+> ```bash
+> # For contributors only
+> git clone https://github.com/rahulanand428/OpenMcp.git
+> cd OpenMcp
+> docker compose up --build -d
+> ```
 
 #### Step 2: Install the NuGet Package
 
@@ -93,12 +100,14 @@ Follow this path if you only want to run the secure, sandboxed tool servers and 
 
 #### Step 1: Run the MCP Servers
 
-Clone the repository and use Docker Compose to start the servers.
+You can run the pre-built images directly from Docker Hub.
 
 ```bash
-git clone https://github.com/rahulanand428/OpenMcp.git
-cd OpenMcp
-docker compose up --build -d
+# 1. Download the consumer-focused Docker Compose file:
+# https://raw.githubusercontent.com/rahulanand428/OpenMcp/main/docker-compose.hub.yml
+
+# 2. Start the services
+docker compose -f docker-compose.hub.yml up -d
 ```
 
 The servers are now running and accessible at the following default endpoints:

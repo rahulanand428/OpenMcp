@@ -32,6 +32,10 @@ kernelBuilder.Plugins.AddFromObject(ddgClient, "DuckDuckGo");
 var kernel = kernelBuilder.Build();
 
 // 4. The Agent can now use the tool automatically!
+// Invoke it via the Kernel (Simulating what an Agent would do)
+    // Instead of calling client.SearchAsync() directly, we ask the Kernel to invoke it.
+    // In a full Agent scenario, the LLM would automatically select this tool and generate the arguments.
+
 var result = await kernel.InvokeAsync("DuckDuckGo", "Search", 
     new KernelArguments { ["query"] = "Latest .NET 9 features" });
 ```
