@@ -28,6 +28,7 @@ __pycache__/
 venv/
 .venv/
 *.egg-info/
+cmd.md
 
 # OS generated files
 .DS_Store
