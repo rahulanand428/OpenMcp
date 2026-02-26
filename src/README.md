@@ -33,7 +33,7 @@ These servers expose standard tools (Database, Files, Search) over SSE (Server-S
 
 ### 3. DuckDuckGo Search MCP Server (`:8083`)
 *   **Image:** `openmcpserver/mcp-duckduckgo`
-*   **Description:** Performs web searches without an API key.
+*   **Description:** Performs web searches, news searches, site-specific searches, and fetches page content.
 *   **Configuration:**
     *   `DDG_DEFAULT_MAX_RESULTS`: Default number of results (default `10`).
 

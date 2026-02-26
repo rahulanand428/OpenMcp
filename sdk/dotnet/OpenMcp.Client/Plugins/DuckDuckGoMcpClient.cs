@@ -40,5 +40,40 @@ namespace OpenMcp.Client.Plugins
                 throw;
             }
         }
+
+        [KernelFunction, Description("Fetches the text content of a specific URL.")]
+        public async Task<string> FetchPageAsync(
+            [Description("The URL to fetch")] string url)
+        {
+            _logger.LogInformation($"[DuckDuckGoMcpClient] FetchPageAsync called with url: {url}");
+            try
+            {
+                return await CallToolAsync("fetch_page", new { url = url });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[DuckDuckGoMcpClient] Error: {ex.Message}");
+                throw;
+            }
+        }
+
+        [KernelFunction, Description("Searches for news articles.")]
+        public async Task<string> SearchNewsAsync(
+            [Description("The news search query")] string query,
+            [Description("Max results to return")] int maxResults = 10)
+        {
+            _logger.LogInformation($"[DuckDuckGoMcpClient] SearchNewsAsync called with query: {query}");
+            return await CallToolAsync("search_news", new { query = query, max_results = maxResults });
+        }
+
+        [KernelFunction, Description("Searches for pages within a specific website.")]
+        public async Task<string> SearchSiteAsync(
+            [Description("The domain to search (e.g., python.org)")] string domain,
+            [Description("The search query")] string query,
+            [Description("Max results to return")] int maxResults = 10)
+        {
+            _logger.LogInformation($"[DuckDuckGoMcpClient] SearchSiteAsync called with domain: {domain}, query: {query}");
+            return await CallToolAsync("search_site", new { domain = domain, query = query, max_results = maxResults });
+        }
     }
 }

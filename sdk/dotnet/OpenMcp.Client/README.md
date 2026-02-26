@@ -44,7 +44,7 @@ var result = await kernel.InvokeAsync("DuckDuckGo", "Search",
 
 ### 1. DuckDuckGoMcpClient
 *   **Purpose:** Web Search (Privacy focused).
-*   **Tools:** `SearchAsync(query, maxResults)`
+*   **Tools:** `SearchAsync`, `SearchNewsAsync`, `SearchSiteAsync`, `FetchPageAsync`
 
 ### 2. FileSystemMcpClient
 *   **Purpose:** Read/Write files in a sandboxed environment.

@@ -28,8 +28,11 @@ var httpClientFactory = serviceProvider.GetRequiredService<IHttpClientFactory>()
 
 // 3. Execute Tests
 // Uncomment specific tests to verify individual MCP servers manually.
-// await TestDuckDuckGoSearchAsync();
+
+//await TestDuckDuckGoSearchAsync();
+
 // await TestFileSystemAsync();
+
 // await TestPostgresAsync();
 
 // By default, we test the Semantic Kernel integration which demonstrates the "Agentic" capability.
@@ -46,10 +49,25 @@ async Task TestDuckDuckGoSearchAsync()
     try
     {
         using var client = new DuckDuckGoMcpClient(httpClientFactory.CreateClient(), url, logger);
-        var result = await client.SearchAsync("Latest news on .NET 9");
+        var result = await client.SearchAsync("Latest news on .NET 9",11);
         Console.WriteLine("\n--- Search Result ---");
         Console.WriteLine(result);
         Console.WriteLine("---------------------\n");
+
+        // 2. Test News Search
+        var newsResult = await client.SearchNewsAsync("Artificial Intelligence trends",5);
+        Console.WriteLine("\n--- News Search Result ---");
+        Console.WriteLine(newsResult);
+
+        // 3. Test Site Specific Search
+        var siteResult = await client.SearchSiteAsync("microsoft.com", "semantic kernel",6);
+        Console.WriteLine("\n--- Site Search Result (microsoft.com) ---");
+        Console.WriteLine(siteResult);
+
+        // 4. Test Fetch Page (Content Extraction)
+        var pageContent = await client.FetchPageAsync("https://wikipedia.com");
+        Console.WriteLine("\n--- Fetch Page Result ---");
+        Console.WriteLine(pageContent);
     }
     catch (Exception ex)
     {

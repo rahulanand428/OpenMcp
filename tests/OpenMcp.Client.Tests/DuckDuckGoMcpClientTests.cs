@@ -61,6 +61,54 @@ namespace OpenMcp.Client.Tests
             _handlerMock.Protected().Verify("SendAsync", Times.AtLeastOnce(), ItExpr.Is<HttpRequestMessage>(req => req.RequestUri.ToString().StartsWith("http://mock-mcp/")), ItExpr.IsAny<CancellationToken>());
         }
 
+        [Fact]
+        public async Task FetchPageAsync_SendsCorrectRequest()
+        {
+            // Arrange
+            var client = new DuckDuckGoMcpClient(_httpClient, "http://mock-mcp", _loggerMock.Object);
+            SetupMockResponse("http://mock-mcp/sse", "data: session_id=test-session-123\n\n");
+            SetupMockResponse("http://mock-mcp/messages/?session_id=test-session-123", "{}");
+
+            // Act
+            try { await client.FetchPageAsync("https://example.com"); }
+            catch (Exception) { }
+
+            // Assert
+            _handlerMock.Protected().Verify("SendAsync", Times.AtLeastOnce(), ItExpr.Is<HttpRequestMessage>(req => req.RequestUri.ToString().StartsWith("http://mock-mcp/")), ItExpr.IsAny<CancellationToken>());
+        }
+
+        [Fact]
+        public async Task SearchNewsAsync_SendsCorrectRequest()
+        {
+            // Arrange
+            var client = new DuckDuckGoMcpClient(_httpClient, "http://mock-mcp", _loggerMock.Object);
+            SetupMockResponse("http://mock-mcp/sse", "data: session_id=test-session-123\n\n");
+            SetupMockResponse("http://mock-mcp/messages/?session_id=test-session-123", "{}");
+
+            // Act
+            try { await client.SearchNewsAsync("news query"); }
+            catch (Exception) { }
+
+            // Assert
+            _handlerMock.Protected().Verify("SendAsync", Times.AtLeastOnce(), ItExpr.Is<HttpRequestMessage>(req => req.RequestUri.ToString().StartsWith("http://mock-mcp/")), ItExpr.IsAny<CancellationToken>());
+        }
+
+        [Fact]
+        public async Task SearchSiteAsync_SendsCorrectRequest()
+        {
+            // Arrange
+            var client = new DuckDuckGoMcpClient(_httpClient, "http://mock-mcp", _loggerMock.Object);
+            SetupMockResponse("http://mock-mcp/sse", "data: session_id=test-session-123\n\n");
+            SetupMockResponse("http://mock-mcp/messages/?session_id=test-session-123", "{}");
+
+            // Act
+            try { await client.SearchSiteAsync("domain.com", "query"); }
+            catch (Exception) { }
+
+            // Assert
+            _handlerMock.Protected().Verify("SendAsync", Times.AtLeastOnce(), ItExpr.Is<HttpRequestMessage>(req => req.RequestUri.ToString().StartsWith("http://mock-mcp/")), ItExpr.IsAny<CancellationToken>());
+        }
+
         // Helper to mock HttpClient responses
         private void SetupMockResponse(string url, string responseContent)
         {

@@ -12,7 +12,7 @@ This project decouples your AI agent's tools from its core logic, allowing you t
 ##  Features
 
 *   **Generic .NET SDK:** `OpenMcp.Client` works with any MCP-compliant server and provides a high-level API for developers.
-*   **Dockerized Servers:** Pre-built Python servers for PostgreSQL, FileSystem, and Web Search that you can run with a single command.
+*   **Dockerized Servers:** Pre-built Python servers for PostgreSQL, FileSystem, and Web Search (including Custom query, News, Site-specific, and Page Fetching).
 *   **Semantic Kernel Ready:** The .NET client is designed as a plug-and-play plugin for Microsoft Semantic Kernel, instantly giving your agents new capabilities.
 *   **Secure & Sandboxed:** The servers are designed with security in mind, featuring read-only database modes and a "jailed" file system to prevent unauthorized access.
 *   **Language Agnostic:** While the SDK is for .NET, the Dockerized MCP servers can be consumed by clients written in any language (Python, Go, TypeScript, etc.).
