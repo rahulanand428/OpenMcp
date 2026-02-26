@@ -9,8 +9,8 @@
     <PackageTags>mcp;ai;semantic-kernel;agent</PackageTags>
     <Authors>OpenMcp Contributors</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <RepositoryUrl>https://github.com/your-username/OpenMcp</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/your-username/OpenMcp</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/rahulanand428/OpenMcp</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/rahulanand428/OpenMcp</PackageProjectUrl>
     <PackageReadmeFile>Readme.md</PackageReadmeFile>
 
     <!-- Source Link & Debugging Configuration -->

@@ -13,7 +13,7 @@ Thank you for your interest in contributing to OpenMcp! We welcome contributions
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/your-username/OpenMcp.git
+    git clone https://github.com/rahulanand428/OpenMcp.git
     cd OpenMcp
     ```
 

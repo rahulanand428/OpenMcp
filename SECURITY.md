@@ -10,6 +10,6 @@
 
 We take the security of OpenMcp seriously. If you discover a security vulnerability, please do **not** open a public issue.
 
-Instead, please email us at **security@yourdomain.com** (or create a private GitHub Security Advisory).
+Instead, please email us at **[openmcp.info@gmail.com]** (or create a private GitHub Security Advisory).
 
 We will acknowledge your report within 48 hours and provide an estimated timeframe for a fix.
