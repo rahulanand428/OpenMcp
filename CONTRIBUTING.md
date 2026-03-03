@@ -46,4 +46,4 @@ dotnet test
 1.  Create a new branch for your feature or fix (`git checkout -b feature/amazing-feature`).
 2.  Commit your changes.
 3.  Push to the branch.
-4.  Open a Pull Request targeting the `main` branch.
+4.  Open a Pull Request targeting the `dev` branch.
